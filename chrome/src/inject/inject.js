@@ -3,7 +3,12 @@ chrome.extension.sendMessage({}, function(settings) {
   initOnHashChangeAction(settings['Domains'])
   initShortcuts(settings['Shortcut'], settings['BackgroundShortcut'])
   initListViewShortcut(settings['RegExp'])
+  initForInbox()
 })
+
+function initForInbox() {
+  window.idled = true
+}
 
 function initOnHashChangeAction(domains) {
   allDomains = "//github.com,"
@@ -65,6 +70,8 @@ function initOnHashChangeAction(domains) {
 function initShortcuts(shortcut, backgroundShortcut) {
   $(document).on("keydown", function(event) {
     // Shortcut: bind user's combination, if a button exist and event not in a textarea
+    $('.gE').removeClass('github-link')
+    $('.scroll-list-item-open .gE, .scroll-list-item-highlighted .gE').addClass('github-link')
     if( processRightCombinationBasedOnShortcut(shortcut, event) && window.idled && getVisible(document.getElementsByClassName('github-link')) && notAnInput(event.target)) {
       triggerGitHubLink(false)
     }
@@ -90,9 +97,9 @@ function initListViewShortcut(regexp) {
 function triggerGitHubLink (backgroundOrNot) {
   // avoid link being appended multiple times
   window.idled = false
-  event = backgroundOrNot ? fakeBackgroundClick() : fakeEvent('click', false)
+  var link = getVisible(document.getElementsByClassName('github-link'))
+  chrome.extension.sendMessage({url: link.href, active: !backgroundOrNot})
 
-  getVisible(document.getElementsByClassName('github-link')).dispatchEvent(event)
   setTimeout( function(){ window.idled = true }, 100)
 }
 
@@ -118,7 +125,7 @@ function generateUrlAndGoTo (selected, regexp) {
       issue_no = title[2]
 
       url = "https://github.com/" + org + "/" + repo + "/issues/" + issue_no
-      linkWithUrl(url).dispatchEvent(fakeEvent('click', false))
+      chrome.extension.sendMessage({url: url})
     }
   }
 }
@@ -160,11 +167,6 @@ function fakeEvent (event, bubbles) {
   return click
 }
 
-function fakeBackgroundClick () {
-  var click = new MouseEvent('click', {metaKey: true})
-  return click
-}
-
 function linkWithUrl (url) {
   var l = document.createElement('a')
   l.href = url
@@ -175,11 +177,12 @@ function linkWithUrl (url) {
 function getVisible (nodeList) {
   if(nodeList.length) {
     var node
-    $(nodeList).map(function() {
-      if(typeof node == 'undefined' && (this.clientWidth > 0 || this.clientHeight > 0)) {
-        node = this
+    for(var i=0; i < nodeList.length; i++) {
+      if(typeof node === 'undefined' && (nodeList[i].offsetHeight > 0 || nodeList[i].clientWidth > 0 || nodeList[i].clientHeight > 0)) {
+        node = nodeList[i]
+        break
       }
-    })
+    }
     return node
   }
 }
