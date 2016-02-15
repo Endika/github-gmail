@@ -1,4 +1,4 @@
-# GitHub :octocat: :on: :love_letter: Gmail
+# Helper for GitHub notifications in Gmail
 
 This is a **Chrome and Firefox Extension** that allows you to open threads in GitHub notification emails with a shortcut. :sparkles:
 
@@ -12,7 +12,7 @@ Open your GitHub notifications using a shortcut (default to `shift + g`, or `shi
 
 #### List View Shortcut
 
-The shortcut is `ctrl + return(enter)`, currently non-customizable. It will trigger one of these two when an email is selected using key navigation(when the blue bar appears):
+The shortcut is `ctrl + return(enter)` (currently non-customizable). It will trigger one of these two when an email is selected using key navigation (when the blue bar appears):
 
 1. [Gmail action buttons](https://github.com/blog/1891-view-issue-pull-request-buttons-for-gmail).
 2. A GitHub Issue/ PR that has an organization named label matching the Regular Expression (default to `^\((.+)\)`).
@@ -37,7 +37,7 @@ The function will only look for a label if there are no action buttons.
 
 1. Go to [Releases](https://github.com/muan/github-gmail/releases) and download the latest version.
 2. Unzip the folder wherever you'd like.
-3. Read Mu-An's code making sure there is no data stealing.
+3. Read Mu-An's code, making sure there is no data stealing.
 4. Go to Chrome extensions page (`chrome://extensions/`) and load the folder as an **Unpacked extension**.
 
 As:
@@ -56,7 +56,7 @@ There are 3 preference settings:
 
 #### Custom Domains (for GitHub Enterprise)
 
-If you are using GitHub enterprise and have a custom domain, you can set it in the extension options page.
+If you are using GitHub Enterprise and have a custom domain, you can set it in the extension options page.
 
 ![domain option](https://f.cloud.github.com/assets/1153134/2075910/2f9b1f70-8d97-11e3-9798-9afcfb550e22.png)
 
@@ -74,7 +74,7 @@ Customize the keyboard shortcut that triggers the `View on GitHub` button. Chang
 
 #### List View Regular Expression
 
-Custom Regular Expression for matching labeled Organization name. Eg. `/^\((.+)\)/` matches `muan` in `(muan)\github-gmail`, and will be use to build the url: `https://github.com/`**`muan`**`/github-gmail/issues`.
+Custom Regular Expression for matching labeled Organization name. E.g. `/^\((.+)\)/` matches `muan` in `(muan)\github-gmail`, and will be use to build the url: `https://github.com/`**`muan`**`/github-gmail/issues`.
 
 This is **not needed** if all you need is triggering the action button. 
 
